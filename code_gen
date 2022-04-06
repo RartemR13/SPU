@@ -1,25 +1,59 @@
-DEF_CMD(in, IN, 
+DEF_CMD(in, IN, IN_SZ,
 {
 	char cmd_name[MAX_CMD_SIZE] = {0};
 	int val = 0;
 	assert(sscanf(cur_str, "%s%d", cmd_name, &val) == 2);
 
-	unsigned char cmd_num = OUT;
+	unsigned char cmd_num = IN;
 	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));
 	assert(fwrite(&val, sizeof(int), 1, bin_file));
 },
 {
-	
+	int val = *(int*)(buf + cur_byte + sizeof(unsigned char));
+	StackPush(&spu_stack, val);
 })
 
-DEF_CMD(out, OUT,
+DEF_CMD(out, OUT, OUT_SZ,
 {
 	char cmd_name[MAX_CMD_SIZE] = {0};
 	assert(sscanf(cur_str, "%s", cmd_name) == 1);
 
-	unsigned char cmd_num = IN;
+	unsigned char cmd_num = OUT;
 	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));	
 },
 {
-	
+	int val = StackPop(&spu_stack);
+	printf("%d\n", val);
+})
+
+DEF_CMD(add, ADD, ADD_SZ,
+{
+	char cmd_name[MAX_CMD_SIZE] = {0};
+	assert(sscanf(cur_str, "%s", cmd_name) == 1);
+
+	unsigned char cmd_num = ADD;
+	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));	
+},
+{
+	int val1 = StackPop(&spu_stack);
+	int	val2 = StackPop(&spu_stack);
+
+	int res_val = val1 + val2;
+	StackPush(&spu_stack, res_val);	
+})
+
+DEF_CMD(sub, SUB, SUB_SZ,
+{
+	char cmd_name[MAX_CMD_SIZE] = {0};
+	assert(sscanf(cur_str, "%s", cmd_name) == 1);
+
+	unsigned char cmd_num = SUB;
+	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));	
+},
+{
+	int val1 = StackPop(&spu_stack);
+	int	val2 = StackPop(&spu_stack);
+
+	int res_val = val2 - val1;
+	StackPush(&spu_stack, res_val);
 })

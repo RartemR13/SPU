@@ -1,9 +1,10 @@
 #pragma once
 
 #include <assert.h>
+#include <stddef.h>
 
 typedef struct Stack_ {
-	Stack_node* storage_;
+	int* storage_;
 	size_t capacity_, size_;
 } Stack;
 

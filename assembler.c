@@ -31,13 +31,13 @@ void ReadFile(FILE* file, char** buf, size_t* buf_size) {
 ASM_COMMANDS Parse(char* str) {
 	assert(str);
 
-#define DEF_CMD(cmd_name, cmd_num, cmd_trans, cmd_exec) \
-	{													\
-		char* cmd_pref = strstr(str, #cmd_name);		\
-		if (cmd_pref && cmd_pref == str)				\
-			return cmd_num;								\
+#define DEF_CMD(cmd_name, cmd_num, cmd_sz, cmd_trans, cmd_exec) \
+	{															\
+		char* cmd_pref = strstr(str, #cmd_name);				\
+		if (cmd_pref && cmd_pref == str)						\
+			return cmd_num;										\
 	}
-//-------------------------------------------------------
+//---------------------------------------------------------------
 #include "code_gen"
 #undef DEF_CMD
 
@@ -47,7 +47,7 @@ ASM_COMMANDS Parse(char* str) {
 int main(int argc, char** argv) {
 
 //Check asm file.
-	assert(argc >= 1);
+	assert(argc == 3);
 
 //Check extension.
 	{
@@ -73,11 +73,11 @@ int main(int argc, char** argv) {
 	strtok(buf, "\n");
 	while (cur_str) {
 		switch(Parse(cur_str)) {
-#define DEF_CMD(cmd_name, cmd_num, cmd_trans, cmd_exec) \
-			case cmd_num:								\
-				cmd_trans								\
+#define DEF_CMD(cmd_name, cmd_num, cmd_sz, cmd_trans, cmd_exec) \
+			case cmd_num:										\
+				cmd_trans										\
 				break;
-//-------------------------------------------------------
+//---------------------------------------------------------------
 #include "code_gen"
 #undef DEF_CMD
 
@@ -89,5 +89,6 @@ int main(int argc, char** argv) {
 	}
 
 	free(buf);
+	fclose(bin_file);
 	return 0;
 }
