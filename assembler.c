@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "commands.h"
+#include "DSL.h"
 
 size_t GetFileSize(FILE* file) {
 	assert(file);
