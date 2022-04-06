@@ -1,0 +1,25 @@
+DEF_CMD(in, IN, 
+{
+	char cmd_name[MAX_CMD_SIZE] = {0};
+	int val = 0;
+	assert(sscanf(cur_str, "%s%d", cmd_name, &val) == 2);
+
+	unsigned char cmd_num = OUT;
+	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));
+	assert(fwrite(&val, sizeof(int), 1, bin_file));
+},
+{
+	
+})
+
+DEF_CMD(out, OUT,
+{
+	char cmd_name[MAX_CMD_SIZE] = {0};
+	assert(sscanf(cur_str, "%s", cmd_name) == 1);
+
+	unsigned char cmd_num = IN;
+	assert(fwrite(&cmd_num, sizeof(unsigned char), 1, bin_file));	
+},
+{
+	
+})
