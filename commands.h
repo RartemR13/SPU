@@ -5,7 +5,10 @@ enum SIZES {
 	OUT_SZ = sizeof(unsigned char),
 	IN_SZ = sizeof(unsigned char) + sizeof(int),
 	ADD_SZ = sizeof(unsigned char),
-	SUB_SZ = sizeof(unsigned char)
+	SUB_SZ = sizeof(unsigned char),
+	JMP_SZ = sizeof(unsigned char) + sizeof(int),
+	HLT_SZ = sizeof(unsigned char),
+	GET_SZ = sizeof(unsigned char)
 };
 
 typedef enum ASM_COMMANDS_ {
@@ -13,5 +16,8 @@ typedef enum ASM_COMMANDS_ {
 	IN,
 	ADD,
 	SUB,
+	JMP,
+	HLT,
+	GET,
 	INCORRECT
 } ASM_COMMANDS;

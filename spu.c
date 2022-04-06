@@ -47,8 +47,8 @@ int main(int argc, char** argv) {
 	Stack spu_stack = {0};
 	StackInit(&spu_stack);
 
-	size_t cur_byte = 0;
-	while (cur_byte < buf_size) {
+	ssize_t cur_byte = 0;
+	while (cur_byte < (ssize_t)buf_size) {
 		switch((unsigned char)buf[cur_byte]) {
 #define DEF_CMD(cmd_name, cmd_num, cmd_sz, cmd_trans, cmd_exec) \
 			case cmd_num:										\

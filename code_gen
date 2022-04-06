@@ -69,3 +69,50 @@ DEF_CMD(sub, SUB, SUB_SZ,
 
 	PUSH(res_val)
 })
+
+DEF_CMD(jmp, JMP, JMP_SZ,
+{
+	CREATEC(cmd_num)
+	SET(cmd_num, JMP)
+
+	WRITE(cmd_num)
+
+	CREATED(byte_num)
+	GETBYTE(byte_num)
+
+	WRITE(byte_num)
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	JMP(byte_num, JMP_SZ)
+})
+
+DEF_CMD(hlt, HLT, HLT_SZ,
+{
+	CREATEC(cmd_num)
+	SET(cmd_num, HLT)
+
+	WRITE(cmd_num)
+},
+{
+	CREATED(byte_num)
+	LASTBYTE(byte_num)
+
+	JMP(byte_num, HLT_SZ)
+})
+
+DEF_CMD(get, GET, GET_SZ,
+{
+	CREATEC(cmd_num)
+	SET(cmd_num, GET)
+
+	WRITE(cmd_num)
+},
+{
+	CREATED(val)
+	GET(val)
+
+	PUSH(val)
+})

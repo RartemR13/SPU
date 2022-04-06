@@ -46,4 +46,25 @@
 #define SUB(res_val, val1, val2) \
 	res_val = val2 - val1;
 //--------------------------------
-	
+
+#define GETBYTE(val) 									 \
+	char temp_str[1000] = {0};							 \
+	sscanf(cur_str, "%s%s", temp_str, temp_str);		 \
+	char* label = GetLabel(temp_str);					 \
+	printf("%s\n", label);								 \
+	val = LMapFind(&lmap, label);						 \
+	free(label);
+//--------------------------------------------------------
+
+#define LASTBYTE(val) \
+	val = buf_size;
+//---------------------
+
+#define JMP(val, cmd_sz) 				\
+	cur_byte = val;						\
+	cur_byte -= cmd_sz;
+//---------------------------------------
+
+#define GET(val)		\
+	scanf("%d", &val);
+//-----------------------

@@ -17,7 +17,7 @@ void StackPush(Stack* stack, int val) {
 
 	if (stack->size_ == stack->capacity_) {
 		stack->capacity_ *= 2;
-		stack->storage_ = realloc(stack->storage_, stack->capacity_*2);
+		stack->storage_ = realloc(stack->storage_, stack->capacity_ * sizeof(int));
 		assert(stack->storage_);
 	}
 
