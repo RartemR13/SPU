@@ -19,5 +19,6 @@ typedef enum ASM_COMMANDS_ {
 	JMP,
 	HLT,
 	GET,
+	LABEL,
 	INCORRECT
 } ASM_COMMANDS;

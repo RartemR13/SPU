@@ -51,7 +51,6 @@
 	char temp_str[1000] = {0};							 \
 	sscanf(cur_str, "%s%s", temp_str, temp_str);		 \
 	char* label = GetLabel(temp_str);					 \
-	printf("%s\n", label);								 \
 	val = LMapFind(&lmap, label);						 \
 	free(label);
 //--------------------------------------------------------

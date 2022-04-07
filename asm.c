@@ -35,6 +35,9 @@ ASM_COMMANDS Parse(char* str) {
 	char temp_cmd[1000] = {0};
 	int count_read = sscanf(str, "%s", temp_cmd);
 
+	if (strstr(temp_cmd, ":"))
+		return LABEL;
+
 #define DEF_CMD(cmd_name, cmd_num, cmd_sz, cmd_trans, cmd_exec) \
 	if (strlen(temp_cmd) <= MAX_CMD_SIZE) {						\
 		if (count_read == 1 && strcmp(temp_cmd, #cmd_name) == 0)\
