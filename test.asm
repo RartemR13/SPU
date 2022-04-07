@@ -1,8 +1,9 @@
+		#loop for check
+:loop		
+	get		
+	out			
+	jmp loop		
 
-:loop
-	get
-	out
-	jmp loop
-
-:end_program
-	hlt
+		#end program
+:end_program		
+	hlt					
