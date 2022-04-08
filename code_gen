@@ -1,12 +1,9 @@
 DEF_CMD(in, IN, IN_SZ,
 {
+	WRITECMD(IN)
+
 	CREATED(val)
 	IN(val)
-
-	CREATEC(cmd_num)
-	SET(cmd_num, IN)
-	
-	WRITE(cmd_num)
 	WRITE(val)
 },
 {
@@ -18,10 +15,7 @@ DEF_CMD(in, IN, IN_SZ,
 
 DEF_CMD(out, OUT, OUT_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, OUT)
-
-	WRITE(cmd_num)	
+	WRITECMD(OUT)	
 },
 {
 	CREATED(val)
@@ -32,10 +26,7 @@ DEF_CMD(out, OUT, OUT_SZ,
 
 DEF_CMD(add, ADD, ADD_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, ADD)
-	
-	WRITE(cmd_num)	
+	WRITECMD(ADD)	
 },
 {
 	CREATED(val1)
@@ -47,15 +38,12 @@ DEF_CMD(add, ADD, ADD_SZ,
 	CREATED(res_val)
 	ADD(res_val, val1, val2)
 
-	PUSH(res_val)	
+	PUSH(res_val)
 })
 
 DEF_CMD(sub, SUB, SUB_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, ADD)
-
-	WRITE(cmd_num)	
+	WRITECMD(SUB)
 },
 {
 	CREATED(val1)
@@ -72,15 +60,8 @@ DEF_CMD(sub, SUB, SUB_SZ,
 
 DEF_CMD(jmp, JMP, JMP_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, JMP)
-
-	WRITE(cmd_num)
-
-	CREATED(byte_num)
-	GETBYTE(byte_num)
-
-	WRITE(byte_num)
+	WRITECMD(JMP)
+	WRITEJUMP
 },
 {
 	CREATED(byte_num)
@@ -91,10 +72,7 @@ DEF_CMD(jmp, JMP, JMP_SZ,
 
 DEF_CMD(hlt, HLT, HLT_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, HLT)
-
-	WRITE(cmd_num)
+	WRITECMD(HLT)
 },
 {
 	CREATED(byte_num)
@@ -105,14 +83,208 @@ DEF_CMD(hlt, HLT, HLT_SZ,
 
 DEF_CMD(get, GET, GET_SZ,
 {
-	CREATEC(cmd_num)
-	SET(cmd_num, GET)
-
-	WRITE(cmd_num)
+	WRITECMD(GET)
 },
 {
 	CREATED(val)
 	GET(val)
 
 	PUSH(val)
+})
+
+DEF_CMD(del, DEL, DEL_SZ,
+{
+	WRITECMD(DEL)
+},
+{
+	CREATED(val)
+	POP(val)
+})
+
+DEF_CMD(call, CALL, CALL_SZ,
+{
+	WRITECMD(CALL)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATED(ret_byte)
+	CURBYTE(ret_byte)
+
+	CREATED(skip_call)
+	SET(skip_call, CALL_SZ)
+	ADD(ret_byte, ret_byte, skip_call)
+
+	PUSH(ret_byte)
+
+	JMP(byte_num, CALL_SZ)
+})
+
+DEF_CMD(ret, RET, RET_SZ,
+{
+	WRITECMD(RET)
+},
+{
+	CREATED(byte_num)
+	POP(byte_num)
+
+	JMP(byte_num, RET_SZ)
+})
+
+DEF_CMD(copy, COPY, COPY_SZ,
+{
+	WRITECMD(COPY)
+},
+{
+	CREATED(val)
+	POP(val)
+
+	PUSH(val)
+	PUSH(val)
+})
+
+DEF_CMD(mul, MUL, MUL_SZ,
+{
+	WRITECMD(MUL)	
+},
+{
+	CREATED(val1)
+	CREATED(val2)
+
+	POP(val1)
+	POP(val2)
+
+	CREATED(res_val)
+	MUL(res_val, val1, val2)
+
+	PUSH(res_val)
+})
+
+DEF_CMD(cmp, CMP, CMP_SZ,
+{
+	WRITECMD(CMP)	
+},
+{
+	CREATED(val1)
+	CREATED(val2)
+
+	POP(val1)
+	POP(val2)
+
+	SETCMP(val1, val2)
+})
+
+DEF_CMD(je, JE, JE_SZ,
+{
+	WRITECMD(JE)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_EQU)
+
+	JUMPIF(byte_num, JE_SZ, bval)
+})
+
+DEF_CMD(jne, JNE, JNE_SZ,
+{
+	WRITECMD(JNE)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_NEQU)
+
+	JUMPIF(byte_num, JNE_SZ, bval)
+})
+
+DEF_CMD(jl, JL, JL_SZ,
+{
+	WRITECMD(JL)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_LOWER)
+
+	JUMPIF(byte_num, JL_SZ, bval)
+})
+
+DEF_CMD(jg, JG, JG_SZ,
+{
+	WRITECMD(JG)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_GREATER)
+
+	JUMPIF(byte_num, JG_SZ, bval)
+})
+
+DEF_CMD(jle, JLE, JLE_SZ,
+{
+	WRITECMD(JLE)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_ELOWER)
+
+	JUMPIF(byte_num, JLE_SZ, bval)
+})
+
+DEF_CMD(jge, JGE, JGE_SZ,
+{
+	WRITECMD(JGE)
+	WRITEJUMP
+},
+{
+	CREATED(byte_num)
+	READ(byte_num)
+
+	CREATEB(bval)
+	CHECKCMP(bval, CMP_EGREATER)
+
+	JUMPIF(byte_num, JGE_SZ, bval)
+})
+
+DEF_CMD(size, SIZE, SIZE_SZ,
+{
+	WRITECMD(SIZE)
+},
+{
+	GETSIZE
+})
+
+DEF_CMD(swp, SWP, SWP_SZ,
+{
+	WRITECMD(SWP)
+},
+{
+	CREATED(val1)
+	CREATED(val2)
+
+	POP(val1)
+	POP(val2)
+
+	PUSH(val1)
+	PUSH(val2)
 })

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "Stack/Stack.h"
 #include "commands.h"
@@ -48,6 +49,7 @@ int main(int argc, char** argv) {
 	StackInit(&spu_stack);
 
 	ssize_t cur_byte = 0;
+	bool cmp_flags[FLAGS_COUNT] = {0};
 	while (cur_byte < (ssize_t)buf_size) {
 		switch((unsigned char)buf[cur_byte]) {
 #define DEF_CMD(cmd_name, cmd_num, cmd_sz, cmd_trans, cmd_exec) \

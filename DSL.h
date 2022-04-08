@@ -15,6 +15,10 @@
 	unsigned char val = 0;
 //-------------------------
 
+#define CREATEB(val)  \
+	bool val = false;
+//---------------------
+
 #define SET(val1, val2) \
 	val1 = val2;
 //-----------------------
@@ -55,6 +59,23 @@
 	free(label);
 //--------------------------------------------------------
 
+#define WRITECMD(val) \
+	CREATEC(cmd_num)  \
+	SET(cmd_num, val) \
+					  \
+	WRITE(cmd_num)
+//---------------------
+
+#define WRITEJUMP	 \
+	CREATED(byte_num)\
+	GETBYTE(byte_num)\
+	WRITE(byte_num)  
+//--------------------
+
+#define CURBYTE(val) \
+	val = cur_byte;
+//--------------------
+
 #define LASTBYTE(val) \
 	val = buf_size;
 //---------------------
@@ -67,3 +88,32 @@
 #define GET(val)		\
 	scanf("%d", &val);
 //-----------------------
+
+#define MUL(res_val, val1, val2) \
+	res_val = val1 * val2;
+//--------------------------------
+
+#define SETCMP(val1, val2)						\
+	cmp_flags[CMP_EQU] = (val1 == val2);		\
+	cmp_flags[CMP_NEQU] = (val1 != val2);		\
+	cmp_flags[CMP_LOWER] = (val1 > val2);		\
+	cmp_flags[CMP_GREATER] = (val1 < val2);		\
+	cmp_flags[CMP_ELOWER] = (val1 >= val2);		\
+	cmp_flags[CMP_EGREATER] = (val1 <= val2);
+//-----------------------------------------------
+
+#define CHECKCMP(val, flag) \
+	val = cmp_flags[flag]; 
+//----------------------------
+
+#define JUMPIF(val, cmd_sz, bval) \
+	if (bval) {					  \
+		JMP(val, cmd_sz)		  \
+	}
+//---------------------------------
+
+#define GETSIZE 					\
+	int val = StackSize(&spu_stack);\
+	StackPush(&spu_stack, val);		
+//-----------------------------------
+
